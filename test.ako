@@ -1,0 +1,8 @@
+(def add2
+  (lambda (x) 
+    succ (succ x)
+  )
+)
+
+(add2 3)
+

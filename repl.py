@@ -1,8 +1,8 @@
 
-import nakahi as nk
+import ako
 
 if __name__ == "__main__":
   while True:
     incoming = input(">> ")
-    prog = nk.parse(incoming)
-    print(nk.eval(prog))
+    prog = ako.parse(incoming)
+    for stmt in prog: print(ako.eval(stmt))
