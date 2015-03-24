@@ -1,6 +1,6 @@
 (def add2
   (lambda (x) 
-    succ (succ x)
+    (succ (succ x))
   )
 )
 

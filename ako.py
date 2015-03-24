@@ -9,12 +9,24 @@ Number = (int, float)
 
 class Env(dict):
 
-    def __init__(self, args, vals, parent):
-        for arg,val in zip(args,vals):
-            self[arg] = val
+    def __init__(self, vars, vals, parent):
+        '''
+        :param vars: names of variables in this environment.
+        :param vals: values of variables in this environment.
+        :param parent: the environment which spawned this one.
+        :return:
+        '''
+        for var,val in zip(vars,vals):
+            self[var] = val
         self.parent = parent
 
     def valueOf(self, var):
+        '''
+        Look for the value of var. If it cannot be found, look at
+        the parent environment.
+        :param var: name of a binding you want the value of.
+        :return: value of the binding.
+        '''
         if var in self: return self[var]
         if self.parent == None: raise ValueError("Unknown variable: " + var)
         return self.parent.valueOf(var)
@@ -27,6 +39,11 @@ class Func(object):
         self.env = env
 
     def invoke(self, *args):
+        '''
+        Apply this function to the specified arguments.
+        :param args: values to bind to the arguments of this function.
+        :return: evaluation of this function.
+        '''
         return eval(self.body, Env(self.args, args, self.env))
 
 
@@ -108,16 +125,16 @@ def eval(expr, env=STD_ENV):
 
   # successor of the expression
   elif fst == "succ":
-      return eval(expr[1]) + 1
+      return eval(expr[1], env) + 1
 
   # predecessor of the expression
   elif fst == "pred":
-      return eval(expr[1]) - 1
+      return eval(expr[1], env) - 1
 
   # variable binding
   elif fst == "def":
       name, body = expr[1], expr[2]
-      env[name] = body
+      env[name] = eval(body, env)
 
   # lambda is for defining function literals
   elif fst == "lambda":
@@ -127,7 +144,7 @@ def eval(expr, env=STD_ENV):
   else:
     fn = eval(expr[0], env)
     argvs = [eval(arg, env) for arg in expr[1:]]
-    Func(argvs).invoke()
+    return fn.invoke(*argvs)
 
 
 ## Main.
