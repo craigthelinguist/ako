@@ -1,8 +1,12 @@
+
 (def add2
-  (lambda (x) 
+  (lambda (x)
     (succ (succ x))
   )
 )
 
-(add2 3)
-
+(def id
+  (lambda (x)
+    (succ (pred x))
+  )
+)

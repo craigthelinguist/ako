@@ -158,4 +158,6 @@ if __name__ == "__main__":
     with open(fname) as f: prog = f.read()
   if prog == None: sys.exit()
   prog = parse(prog)
-  for stmt in prog: print(eval(stmt))
+  for stmt in prog:
+      val = eval(stmt)
+      if val != None: print(val)
