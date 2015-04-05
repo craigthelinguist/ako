@@ -1,0 +1,43 @@
+(def id
+  (lambda (x)
+    (succ (pred x))
+  )
+)
+
+(def not
+  (lambda (x)
+    (cond
+      ((x) (nil))
+      ((true) (true))
+    )
+  )
+)
+
+(def if
+  (lambda (x y z)
+    (cond
+      ((x) (y))
+      ((not x) (z))
+    )
+  )
+)
+
+(def sgn
+  (lambda (x)
+    (cond
+      ((> x 0) ('1))
+      ((< x 0) ('-1))
+      ((true) ('0))
+    )
+  )
+)
+
+(def +
+  (lambda (x y)
+    (cond
+      ((eq y 0) (x))
+      ((> y 0) (+ (succ x) (pred y)))
+      ((< y 0) (+ (pred x) (succ y))) 
+    )
+  )
+)
