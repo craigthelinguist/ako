@@ -1,0 +1,14 @@
+(def id
+  (lambda (x)
+    (succ (pred x))
+  )
+)
+
+(def not
+  (lambda (x)
+    (cond
+      ((x) (nil))
+      ((true) (true))
+    )
+  )
+)

@@ -51,7 +51,7 @@ class Func(object):
 ## ------------------------------------------------------------
 
 def tokenise(program):
-  return program.replace("(", " ( ").replace(")"," ) ").replace("'","' ").split()
+  return program.replace("(", " ( ").replace(")"," ) ").split()
 
 def toatom(token):
   try:
@@ -84,14 +84,15 @@ def parse(program):
 ## Standard Environment.
 ## ------------------------------------------------------------
 
-STD_ENV = Env([], [], None)
+STD_ENV = Env(["true", "nil"], ["true", "nil"], None)
 
 ## Interpreter.
 ## ------------------------------------------------------------
 
-def eval(expr, env=STD_ENV):
+def eval(expr, env):
 
   # evaluate literals
+
   if type(expr) in Number:
     return expr
   elif isinstance(expr, Symbol):
@@ -101,15 +102,34 @@ def eval(expr, env=STD_ENV):
   fst = expr[0]
 
   # return the literal expression.
-  if fst == "quote" or fst == "'": return expr[1]
+  if fst == "quote": return expr[1]
+
+  elif fst.startswith("'"): return fst[1:]
 
   # return true if it is a symbol.
   elif fst == "atom":
-    return "t" if isinstance(expr[2], Symbol) else []
+    return "true" if isinstance(expr[2], Symbol) else []
+
+  elif fst == "<":
+      return "t" if eval(expr[1], env) < eval(expr[2], env) else "nil"
+
+  elif fst == ">":
+      return "true" if eval(expr[1], env) > eval(expr[2], env) else "nil"
+
+  elif fst == ">=":
+      return "true" if eval(expr[1], env) >= eval(expr[2], env) else "nil"
+
+  elif fst == "<=":
+      return "true" if eval(expr[1], env) >= eval(expr[2], env) else "nil"
+
+  elif fst == "cond":
+      for cond, value in expr[1:]:
+          if eval(cond, env) != "nil": return eval(value, env)
+      raise ValueError("Incomplete conditional")
 
   # test equality of two expressions
   elif fst == "eq":
-      return expr[1] == expr[2]
+      return "true" if eval(expr[1], env) == eval(expr[2], env) else "nil"
 
   # car returns the head of a list.
   elif fst == "car":
@@ -140,11 +160,25 @@ def eval(expr, env=STD_ENV):
   elif fst == "lambda":
       return Func(expr[1], expr[2], env)
 
-  # function invocation
+  elif fst == "import":
+      for fname in expr[1:]:
+          eval_prog(fname, env)
+
+  # function/variable invocation
   else:
     fn = eval(expr[0], env)
+    if not isinstance(fn, Func): return fn
     argvs = [eval(arg, env) for arg in expr[1:]]
     return fn.invoke(*argvs)
+
+
+def eval_prog(fname, env):
+    if not fname.endswith(".ako"): raise ValueError("Must specify .ako file")
+    with open(fname) as f: prog = f.read()
+    prog = parse(prog)
+    for stmt in prog:
+        val = eval(stmt, env)
+        if val != None: print(val)
 
 
 ## Main.
@@ -153,11 +187,4 @@ import sys
 
 if __name__ == "__main__":
   fname = sys.argv[1]
-  prog = None
-  if fname.endswith(".ako"):
-    with open(fname) as f: prog = f.read()
-  if prog == None: sys.exit()
-  prog = parse(prog)
-  for stmt in prog:
-      val = eval(stmt)
-      if val != None: print(val)
+  eval_prog(fname, STD_ENV)

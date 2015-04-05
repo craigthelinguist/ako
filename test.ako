@@ -1,12 +1,10 @@
+(import core.ako)
 
-(def add2
+(def monus
   (lambda (x)
-    (succ (succ x))
-  )
-)
-
-(def id
-  (lambda (x)
-    (succ (pred x))
+    (cond
+      ( (> x 0) (pred x))
+      ( (<= x 0) (id 0))
+    )
   )
 )
