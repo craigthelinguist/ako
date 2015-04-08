@@ -143,6 +143,16 @@ def eval(expr, env):
   elif fst == "cons":
       return [expr[1]] ++ expr[2]
 
+  # arithmetic operations
+  elif fst == "+":
+      return eval(expr[1], env) + eval(expr[2], env)
+  elif fst == "-":
+      return eval(expr[1], env) - eval(expr[2], env)
+  elif fst == "*":
+      return eval(expr[1], env) * eval(expr[2], env)
+  elif fst == "/":
+      return eval(expr[1], env) / eval(expr[2], env)
+
   # successor of the expression
   elif fst == "succ":
       return eval(expr[1], env) + 1

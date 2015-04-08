@@ -31,13 +31,3 @@
     )
   )
 )
-
-(def +
-  (lambda (x y)
-    (cond
-      ((eq y 0) (x))
-      ((> y 0) (+ (succ x) (pred y)))
-      ((< y 0) (+ (pred x) (succ y))) 
-    )
-  )
-)
