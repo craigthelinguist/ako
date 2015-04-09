@@ -172,7 +172,9 @@ def eval(expr, env):
 
   elif fst == "import":
       for fname in expr[1:]:
+          if not fname.endswith(".ako"): fname = fname + ".ako"
           eval_prog(fname, env)
+          
 
   # function/variable invocation
   else:

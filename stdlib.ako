@@ -23,6 +23,15 @@
   )
 )
 
+(def abs
+  (lambda (x)
+    (cond
+      ((>= x 0) x)
+      ((true) (mul -1 x))
+    )
+  )
+)
+
 (def exp
   (lambda (x y)
     (cond
