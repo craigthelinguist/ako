@@ -13,21 +13,21 @@
   )
 )
 
-(def if
-  (lambda (x y z)
+(def sgn
+  (lambda (x)
     (cond
-      ((x) (y))
-      ((not x) (z))
+      ((> x 0) 1)
+      ((< x 0) -1)
+      ((true) 0)
     )
   )
 )
 
-(def sgn
-  (lambda (x)
+(def exp
+  (lambda (x y)
     (cond
-      ((> x 0) ('1))
-      ((< x 0) ('-1))
-      ((true) ('0))
+      ((= y 0) 1)
+      ((true) (mul x (exp x (pred y))))
     )
   )
 )

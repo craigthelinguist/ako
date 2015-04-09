@@ -128,7 +128,7 @@ def eval(expr, env):
       raise ValueError("Incomplete conditional")
 
   # test equality of two expressions
-  elif fst == "eq":
+  elif fst in ["eq", "="]:
       return "true" if eval(expr[1], env) == eval(expr[2], env) else "nil"
 
   # car returns the head of a list.
@@ -144,13 +144,13 @@ def eval(expr, env):
       return [expr[1]] ++ expr[2]
 
   # arithmetic operations
-  elif fst == "+":
+  elif fst in ["+", "add"]:
       return eval(expr[1], env) + eval(expr[2], env)
-  elif fst == "-":
+  elif fst in ["-", "sub"]:
       return eval(expr[1], env) - eval(expr[2], env)
-  elif fst == "*":
+  elif fst in ["*", "mul"]:
       return eval(expr[1], env) * eval(expr[2], env)
-  elif fst == "/":
+  elif fst in ["/", "div"]:
       return eval(expr[1], env) / eval(expr[2], env)
 
   # successor of the expression
