@@ -1,9 +1,3 @@
-(def id
-  (lambda (x)
-    (succ (pred x))
-  )
-)
-
 (def not
   (lambda (x)
     (cond
@@ -35,8 +29,24 @@
 (def exp
   (lambda (x y)
     (cond
+      ((< y 0) (div 1 (exp x (abs y))))
       ((= y 0) 1)
       ((true) (mul x (exp x (pred y))))
     )
+  )
+)
+
+(def if
+  (lambda (x y z)
+    (cond
+      ((x) (y))
+      ((not x) (z))
+    )
+  )
+)
+
+(def monus
+  (lambda (x y)
+    (if (> y x) 0 (- x y))
   )
 )
