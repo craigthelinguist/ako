@@ -39,8 +39,8 @@
 (def if
   (lambda (x y z)
     (cond
-      ((x) (y))
-      ((not x) (z))
+      (x y)
+      ((not x) z)
     )
   )
 )
@@ -53,12 +53,12 @@
 
 (def min
   (lambda (x y)
-    (monus x (monus x y))
+    (if (> x y) y x)
   )
 )
 
 (def max
   (lambda (x y)
-    (monus (+ x y) (min x y))
+    (if (> x y) x y)
   )
 )
